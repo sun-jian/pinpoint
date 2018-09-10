@@ -20,6 +20,9 @@ import com.navercorp.pinpoint.common.server.bo.stat.ActiveTraceBo;
 import com.navercorp.pinpoint.common.server.bo.stat.AgentStatBo;
 import com.navercorp.pinpoint.common.server.bo.stat.CpuLoadBo;
 import com.navercorp.pinpoint.common.server.bo.stat.DataSourceListBo;
+import com.navercorp.pinpoint.common.server.bo.stat.DeadlockBo;
+import com.navercorp.pinpoint.common.server.bo.stat.DirectBufferBo;
+import com.navercorp.pinpoint.common.server.bo.stat.FileDescriptorBo;
 import com.navercorp.pinpoint.common.server.bo.stat.JvmGcBo;
 import com.navercorp.pinpoint.common.server.bo.stat.JvmGcDetailedBo;
 import com.navercorp.pinpoint.common.server.bo.stat.ResponseTimeBo;
@@ -58,6 +61,15 @@ public class HBaseAgentStatService implements AgentStatService {
     @Autowired
     private AgentStatDaoV2<ResponseTimeBo> responseTimeDao;
 
+    @Autowired
+    private AgentStatDaoV2<DeadlockBo> deadlockDao;
+
+    @Autowired
+    private AgentStatDaoV2<FileDescriptorBo> fileDescriptorDao;
+
+    @Autowired
+    private AgentStatDaoV2<DirectBufferBo> directBufferDao;
+
     @Override
     public void save(AgentStatBo agentStatBo) {
         final String agentId = agentStatBo.getAgentId();
@@ -69,9 +81,12 @@ public class HBaseAgentStatService implements AgentStatService {
             this.activeTraceDao.insert(agentId, agentStatBo.getActiveTraceBos());
             this.dataSourceListDao.insert(agentId, agentStatBo.getDataSourceListBos());
             this.responseTimeDao.insert(agentId, agentStatBo.getResponseTimeBos());
+            this.deadlockDao.insert(agentId, agentStatBo.getDeadlockBos());
+            this.fileDescriptorDao.insert(agentId, agentStatBo.getFileDescriptorBos());
+            this.directBufferDao.insert(agentId, agentStatBo.getDirectBufferBos());
         } catch (Exception e) {
             logger.warn("Error inserting AgentStatBo. Caused:{}", e.getMessage(), e);
         }
-
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2017 NAVER Corp.
+ * Copyright 2018 NAVER Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,6 +16,7 @@
 
 package com.navercorp.pinpoint.web.service;
 
+import com.navercorp.pinpoint.io.request.Message;
 import com.navercorp.pinpoint.rpc.Future;
 import com.navercorp.pinpoint.rpc.PinpointSocket;
 import com.navercorp.pinpoint.rpc.ResponseMessage;
@@ -44,6 +45,7 @@ import com.navercorp.pinpoint.web.vo.AgentInfo;
 import org.apache.thrift.TBase;
 import org.apache.thrift.TException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +58,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author HyunGil Jeong
- * @Author Taejin Koo
+ * @author Taejin Koo
  */
 @Service
 public class AgentServiceImpl implements AgentService {
@@ -72,9 +74,11 @@ public class AgentServiceImpl implements AgentService {
     private ClusterManager clusterManager;
 
     @Autowired
+    @Qualifier("commandHeaderTBaseSerializerFactory")
     private SerializerFactory<HeaderTBaseSerializer> commandSerializerFactory;
 
     @Autowired
+    @Qualifier("commandHeaderTBaseDeserializerFactory")
     private DeserializerFactory<HeaderTBaseDeserializer> commandDeserializerFactory;
 
     @Value("#{pinpointWebProps['web.activethread.activeAgent.duration.days'] ?: 7}")
@@ -350,12 +354,14 @@ public class AgentServiceImpl implements AgentService {
 
     @Override
     public TBase<?, ?> deserializeResponse(byte[] objectData) throws TException {
-        return SerializationUtils.deserialize(objectData, commandDeserializerFactory);
+        Message<TBase<?, ?>> deserialize = SerializationUtils.deserialize(objectData, commandDeserializerFactory);
+        return deserialize.getData();
     }
 
     @Override
-    public TBase<?, ?> deserializeResponse(byte[] objectData, TBase<?, ?> defaultValue) {
-        return SerializationUtils.deserialize(objectData, commandDeserializerFactory, defaultValue);
+    public TBase<?, ?> deserializeResponse(byte[] objectData, Message<TBase<?, ?>> defaultValue) {
+        Message<TBase<?, ?>> deserialize = SerializationUtils.deserialize(objectData, commandDeserializerFactory, defaultValue);
+        return deserialize.getData();
     }
 
 }

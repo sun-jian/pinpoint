@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 NAVER Corp.
+ * Copyright 2018 NAVER Corp.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package com.navercorp.pinpoint.rpc.client;
 
+import com.navercorp.pinpoint.common.util.Assert;
 import com.navercorp.pinpoint.rpc.DefaultFuture;
 import com.navercorp.pinpoint.rpc.Future;
 import com.navercorp.pinpoint.rpc.PinpointSocketException;
@@ -27,7 +28,6 @@ import com.navercorp.pinpoint.rpc.stream.ClientStreamChannelContext;
 import com.navercorp.pinpoint.rpc.stream.ClientStreamChannelMessageListener;
 import com.navercorp.pinpoint.rpc.stream.StreamChannelContext;
 import com.navercorp.pinpoint.rpc.stream.StreamChannelStateChangeEventHandler;
-import com.navercorp.pinpoint.rpc.util.AssertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,20 +47,14 @@ public class DefaultPinpointClient implements PinpointClient {
 
     private List<PinpointClientReconnectEventListener> reconnectEventListeners = new CopyOnWriteArrayList<PinpointClientReconnectEventListener>();
 
-    public DefaultPinpointClient() {
-        this(new ReconnectStateClientHandler());
-    }
-
-    public DefaultPinpointClient(PinpointClientHandler pinpointClientHandler) {
-        AssertUtils.assertNotNull(pinpointClientHandler, "pinpointClientHandler");
-
-        this.pinpointClientHandler = pinpointClientHandler;
+     public DefaultPinpointClient(PinpointClientHandler pinpointClientHandler) {
+        this.pinpointClientHandler = Assert.requireNonNull(pinpointClientHandler, "pinpointClientHandler");
         pinpointClientHandler.setPinpointClient(this);
     }
 
     @Override
     public void reconnectSocketHandler(PinpointClientHandler pinpointClientHandler) {
-        AssertUtils.assertNotNull(pinpointClientHandler, "pinpointClientHandler");
+        Assert.requireNonNull(pinpointClientHandler, "pinpointClientHandler");
 
         if (closed) {
             logger.warn("reconnectClientHandler(). pinpointClientHandler force close.");
@@ -129,10 +123,6 @@ public class DefaultPinpointClient implements PinpointClient {
         return pinpointClientHandler.request(bytes);
     }
 
-    @Override
-    public void response(RequestPacket requestPacket, byte[] payload) {
-        response(requestPacket.getRequestId(), payload);
-    }
 
     @Override
     public void response(int requestId, byte[] payload) {

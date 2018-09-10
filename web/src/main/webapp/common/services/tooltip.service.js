@@ -53,6 +53,26 @@
 			"position": "top",
 			"trigger": "click"
 		},
+		"openFileDescriptor": {
+			"position": "top",
+			"trigger": "click"
+		},
+		"directBufferCount": {
+			"position": "top",
+			"trigger": "click"
+		},
+		"directBufferMemory": {
+			"position": "top",
+			"trigger": "click"
+		},
+		"mappedBufferCount": {
+			"position": "top",
+			"trigger": "click"
+		},
+		"mappedBufferMemory": {
+			"position": "top",
+			"trigger": "click"
+		},
 		"responseSummaryChart": {
 			"position": "top",
 			"trigger": "click"
@@ -76,6 +96,58 @@
 		"alarmRules": {
 			"position": "top",
 			"trigger": "click"
+		},
+		"statHeap": {
+			"position": "top",
+			"trigger": "click"
+		},
+		"statPermGen": {
+			"position": "top",
+			"trigger": "click"
+		},
+		"statJVMCpu": {
+			"position": "top",
+			"trigger": "click"
+		},
+		"statSystemCpu": {
+			"position": "top",
+			"trigger": "click"
+		},
+		"statTPS": {
+			"position": "top",
+			"trigger": "click"
+		},
+		"statActiveThread": {
+			"position": "top",
+			"trigger": "click"
+		},
+		"statResponseTime": {
+			"position": "top",
+			"trigger": "click"
+		},
+		"statDataSource": {
+			"position": "top",
+			"trigger": "click"
+		},
+		"statOpenFileDescriptor": {
+			"position": "top",
+			"trigger": "click"
+		},
+		"statDirectBufferCount": {
+			"position": "top",
+			"trigger": "click"
+		},
+		"statDirectBufferMemory": {
+			"position": "top",
+			"trigger": "click"
+		},
+		"statMappedBufferCount": {
+			"position": "top",
+			"trigger": "click"
+		},
+		"statMappedBufferMemory": {
+			"position": "top",
+			"trigger": "click"
 		}
 	});
 
@@ -96,7 +168,12 @@
 				case "scatter":
 					return function() { return helpContentTemplate(helpContentService.scatter["default"]); };
 				case "navbar":
-					return function() { return helpContentTemplate(helpContentService.navbar.applicationSelector) + helpContentTemplate(helpContentService.navbar.depth) + helpContentTemplate(helpContentService.navbar.periodSelector); };
+					return function() {
+						return helpContentTemplate(helpContentService.navbar.applicationSelector) +
+							helpContentTemplate(helpContentService.navbar.depth) +
+							helpContentTemplate(helpContentService.navbar.bidirectional) +
+							helpContentTemplate(helpContentService.navbar.periodSelector);
+					};
 				case "agentList":
 					return function() { return helpContentTemplate(helpContentService.inspector.list); };
 				case "heap":
@@ -113,6 +190,16 @@
 					return function() { return helpContentTemplate(helpContentService.inspector.dataSource); };
 				case "responseTime":
 					return function() { return helpContentTemplate(helpContentService.inspector.responseTime); };
+				case "openFileDescriptor":
+					return function() { return helpContentTemplate(helpContentService.inspector.openFileDescriptor); };
+				case "directBufferCount":
+					return function() { return helpContentTemplate(helpContentService.inspector.directBufferCount); };
+				case "directBufferMemory":
+					return function() { return helpContentTemplate(helpContentService.inspector.directBufferMemory); };
+				case "mappedBufferCount":
+					return function() { return helpContentTemplate(helpContentService.inspector.mappedBufferCount); };
+				case "mappedBufferMemory":
+					return function() { return helpContentTemplate(helpContentService.inspector.mappedBufferMemory); };
 				case "responseSummaryChart":
 					return function() { return helpContentTemplate(helpContentService.nodeInfoDetails.responseSummary); };
 				case "loadChart":
@@ -125,6 +212,32 @@
 					return function() { return helpContentTemplate(helpContentService.realtime["default"]); };
 				case "alarmRules":
 					return function() { return helpContentTemplate(helpContentService.configuration.alarmRules); };
+				case "statHeap":
+					return function() { return helpContentTemplate(helpContentService.inspector.statHeap); };
+				case "statPermGen":
+					return function() { return helpContentTemplate(helpContentService.inspector.statPermGen); };
+				case "statJVMCpu":
+					return function() { return helpContentTemplate(helpContentService.inspector.statJVMCpu); };
+				case "statSystemCpu":
+					return function() { return helpContentTemplate(helpContentService.inspector.statSystemCpu); };
+				case "statTPS":
+					return function() { return helpContentTemplate(helpContentService.inspector.statTPS); };
+				case "statActiveThread":
+					return function() { return helpContentTemplate(helpContentService.inspector.statActiveThread); };
+				case "statResponseTime":
+					return function() { return helpContentTemplate(helpContentService.inspector.statResponseTime); };
+				case "statDataSource":
+					return function() { return helpContentTemplate(helpContentService.inspector.statDataSource); };
+				case "statOpenFileDescriptor":
+					return function() { return helpContentTemplate(helpContentService.inspector.statOpenFileDescriptor); };
+				case "statDirectBufferCount":
+					return function() { return helpContentTemplate(helpContentService.inspector.statDirectBufferCount); };
+				case "statDirectBufferMemory":
+					return function() { return helpContentTemplate(helpContentService.inspector.statDirectBufferMemory); };
+				case "statMappedBufferCount":
+					return function() { return helpContentTemplate(helpContentService.inspector.statMappedBufferCount); };
+				case "statMappedBufferMemory":
+					return function() { return helpContentTemplate(helpContentService.inspector.statMappedBufferMemory); };
 			}
 		}
 	}]);

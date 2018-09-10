@@ -26,7 +26,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * @Author Taejin Koo
+ * @author Taejin Koo
  */
 @JsonSerialize(using = AgentActiveThreadCountListSerializer.class)
 public class AgentActiveThreadCountList {
@@ -47,7 +47,7 @@ public class AgentActiveThreadCountList {
 
     public List<AgentActiveThreadCount> getAgentActiveThreadRepository() {
         // sort agentId
-        Collections.sort(agentActiveThreadRepository, new Comparator<AgentActiveThreadCount>() {
+        agentActiveThreadRepository.sort(new Comparator<AgentActiveThreadCount>() {
             @Override
             public int compare(AgentActiveThreadCount o1, AgentActiveThreadCount o2) {
                 final String agentId1 = StringUtils.defaultString(o1.getAgentId(), "");

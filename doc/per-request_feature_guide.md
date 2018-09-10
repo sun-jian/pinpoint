@@ -1,3 +1,12 @@
+---
+title: Separate Logging Per Request
+keywords: history
+last_updated: Feb 1, 2018
+sidebar: mydoc_sidebar
+permalink: perrequestfeatureguide.html
+disqus: false
+---
+
 # ENGLISH GUIDE
 
 ## Per-request logging
@@ -106,7 +115,7 @@ ex) With Pinpoint
 ```
 
 The transactionId printed in the log message is the same as the transactionId in Pinpoint Web’s Transaction List view.
-![per-request_feature_1.jpg](img/per-request_feature_1.jpg)
+![per-request_feature_1.jpg](images/per-request_feature_1.jpg)
 
 ### 2. How to configure
 
@@ -197,7 +206,7 @@ Pinpoint Web only adds link buttons - you should implement the logic to retrieve
 If you want to expose your agent’s log messages, please follow the steps below.
 
 **step 1**
-You should implement a controller that receives transactionId, spanId, transanction_start_time as parameters and retrieve the logs yourself. 
+You should implement a controller that receives transactionId, spanId, transaction_start_time as parameters and retrieve the logs yourself. 
 We do not yet provide a way to retrieve the logs.
 
 example)
@@ -224,8 +233,8 @@ log.button.name= log
 ```
 
 **step 3**
-Pinpoint 1.5.0 or later, we improve button to decided enable/disable depending on wherether or not being logged.
-You should implement interceptor for using logging appender to add logic wherether or not being logged. you also should create plugin for logging appdender internally.
+Pinpoint 1.5.0 or later, we improve button to decided enable/disable depending on whether or not being logged.
+You should implement interceptor for using logging appender to add logic whether or not being logged. you also should create plugin for logging appender internally.
 Please refer to Pinpoint Profiler Plugin Sample([Link](https://github.com/naver/pinpoint-plugin-sample)).
 Location added logic of interceptor is method to log for data of LoggingEvent in appender class. you should review your appender class and find method.
 This is interceptor example.
@@ -258,7 +267,7 @@ public class AppenderInterceptor implements AroundInterceptor0 {
 ```
 
 If those are correctly configured, the buttons are added in the transaction list view.
-![per-request_feature_2.jpg](img/per-request_feature_2.jpg)
+![per-request_feature_2.jpg](images/per-request_feature_2.jpg)
 
 For details in how the log buttons are generated, please refer to Pinpoint Web’s BusinessTransactionController and ScatterChartController.
 
@@ -376,7 +385,7 @@ ex) With Pinpoint
 ```
 
 로그메시지에 출력된 transactionId는 Pinpoint web의 transactionlist의 transactionId와 일치한다.
-![per-request_feature_1.jpg](img/per-request_feature_1.jpg)
+![per-request_feature_1.jpg](images/per-request_feature_1.jpg)
 
 ### 2. 설정 방법
 
@@ -452,7 +461,7 @@ ex) logback - logback.xml
 
 **2-3 로그 출력 확인**
 
-Pinpoint agent가 적용된 서비스를 동작하여 log message에 아래와 같이 tansactionId, spanId 정보가 출력되는것을 확인하면 된다.
+Pinpoint agent가 적용된 서비스를 동작하여 log message에 아래와 같이 transactionId, spanId 정보가 출력되는것을 확인하면 된다.
 
 ```
 2015-04-04 14:35:20 [INFO](ContentInfoCollector:76 ) [txId : agent^14252^17 spanId : 1224] get content name : TECH
@@ -530,5 +539,5 @@ public class AppenderInterceptor implements AroundInterceptor0 {
 
 
 위와 같이 설정 및 구현을 추가하고 pinpoint web을 동작시키면 아래와 같이 버튼이 추가 된다.
-![per-request_feature_2.jpg](img/per-request_feature_2.jpg)
+![per-request_feature_2.jpg](images/per-request_feature_2.jpg)
 로그 버튼을 생성해주는 과정을 보시려면, Pinpoint Web의 BusinessTransactionController 와 ScatterChartController class를 참고하세요.

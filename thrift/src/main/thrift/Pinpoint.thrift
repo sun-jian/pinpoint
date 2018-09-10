@@ -1,3 +1,5 @@
+include "Command.thrift"
+
 namespace java com.navercorp.pinpoint.thrift.dto
 
 enum TJvmGcType {
@@ -44,6 +46,8 @@ struct TAgentInfo {
     20: optional TServerMetaData   serverMetaData
 
     30: optional TJvmInfo   jvmInfo
+
+    40: optional bool container = false
 }
 
 struct TJvmGc {
@@ -55,7 +59,13 @@ struct TJvmGc {
     6: i64          jvmGcOldCount
     7: i64          jvmGcOldTime
     8: optional TJvmGcDetailed    jvmGcDetailed
+}
 
+struct TDirectBuffer {
+    1: optional i64 directCount
+    2: optional i64 directMemoryUsed
+    3: optional i64 mappedCount
+    4: optional i64 mappedMemoryUsed
 }
 
 struct TJvmGcDetailed {
@@ -93,6 +103,12 @@ struct TActiveTrace {
 
 struct TResponseTime {
     1: optional i64         avg = 0
+    2: optional i64         max = 0
+}
+
+struct TDeadlock {
+    1: optional i32                         deadlockedThreadCount;
+    2: optional list<Command.TThreadDump>   deadlockedThreadList;
 }
 
 struct TAgentStat {
@@ -106,6 +122,9 @@ struct TAgentStat {
     40: optional TActiveTrace   activeTrace
     50: optional TDataSourceList dataSourceList
     60: optional TResponseTime responseTime
+    70: optional TDeadlock deadlock
+    80: optional TFileDescriptor fileDescriptor
+    90: optional TDirectBuffer directBuffer
     200: optional string    metadata
 }
 
@@ -126,4 +145,8 @@ struct TDataSource {
 
 struct TDataSourceList {
     1: list<TDataSource> dataSourceList
+}
+
+struct TFileDescriptor {
+    1: i64                      openFileDescriptorCount
 }

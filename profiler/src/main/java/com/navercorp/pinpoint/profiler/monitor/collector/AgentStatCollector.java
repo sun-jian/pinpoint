@@ -22,6 +22,9 @@ import com.navercorp.pinpoint.profiler.context.module.AgentStartTime;
 import com.navercorp.pinpoint.profiler.monitor.collector.activethread.ActiveTraceMetricCollector;
 import com.navercorp.pinpoint.profiler.monitor.collector.cpu.CpuLoadMetricCollector;
 import com.navercorp.pinpoint.profiler.monitor.collector.datasource.DataSourceMetricCollector;
+import com.navercorp.pinpoint.profiler.monitor.collector.deadlock.DeadlockMetricCollector;
+import com.navercorp.pinpoint.profiler.monitor.collector.directbuffer.DirectBufferMetricCollector;
+import com.navercorp.pinpoint.profiler.monitor.collector.filedescriptor.FileDescriptorMetricCollector;
 import com.navercorp.pinpoint.profiler.monitor.collector.jvmgc.JvmGcMetricCollector;
 import com.navercorp.pinpoint.profiler.monitor.collector.response.ResponseTimeMetricCollector;
 import com.navercorp.pinpoint.profiler.monitor.collector.transaction.TransactionMetricCollector;
@@ -40,6 +43,9 @@ public class AgentStatCollector implements AgentStatMetricCollector<TAgentStat> 
     private final ActiveTraceMetricCollector activeTraceMetricCollector;
     private final DataSourceMetricCollector dataSourceMetricCollector;
     private final ResponseTimeMetricCollector responseTimeMetricCollector;
+    private final DeadlockMetricCollector deadlockMetricCollector;
+    private final FileDescriptorMetricCollector fileDescriptorMetricCollector;
+    private final DirectBufferMetricCollector directBufferMetricCollector;
 
     @Inject
     public AgentStatCollector(
@@ -50,7 +56,10 @@ public class AgentStatCollector implements AgentStatMetricCollector<TAgentStat> 
             TransactionMetricCollector transactionMetricCollector,
             ActiveTraceMetricCollector activeTraceMetricCollector,
             DataSourceMetricCollector dataSourceMetricCollector,
-            ResponseTimeMetricCollector responseTimeMetricCollector) {
+            ResponseTimeMetricCollector responseTimeMetricCollector,
+            DeadlockMetricCollector deadlockMetricCollector,
+            FileDescriptorMetricCollector fileDescriptorMetricCollector,
+            DirectBufferMetricCollector directBufferMetricCollector) {
         if (agentId == null) {
             throw new NullPointerException("agentId must not be null");
         }
@@ -70,8 +79,18 @@ public class AgentStatCollector implements AgentStatMetricCollector<TAgentStat> 
             throw new NullPointerException("dataSourceMetricCollector must not be null");
         }
         if (responseTimeMetricCollector == null) {
-            throw new NullPointerException("responseTimeMetricCollector may not be null");
+            throw new NullPointerException("responseTimeMetricCollector must not be null");
         }
+        if (deadlockMetricCollector == null) {
+            throw new NullPointerException("deadlockMetricCollector may not be null");
+        }
+        if (fileDescriptorMetricCollector == null) {
+            throw new NullPointerException("fileDescriptorMetricCollector may not be null");
+        }
+        if (directBufferMetricCollector == null) {
+            throw new NullPointerException("directBufferMetricCollector may not be null");
+        }
+
         this.agentId = agentId;
         this.agentStartTimestamp = agentStartTimestamp;
         this.jvmGcMetricCollector = jvmGcMetricCollector;
@@ -80,6 +99,9 @@ public class AgentStatCollector implements AgentStatMetricCollector<TAgentStat> 
         this.activeTraceMetricCollector = activeTraceMetricCollector;
         this.dataSourceMetricCollector = dataSourceMetricCollector;
         this.responseTimeMetricCollector = responseTimeMetricCollector;
+        this.deadlockMetricCollector = deadlockMetricCollector;
+        this.fileDescriptorMetricCollector = fileDescriptorMetricCollector;
+        this.directBufferMetricCollector = directBufferMetricCollector;
     }
 
     @Override
@@ -93,6 +115,9 @@ public class AgentStatCollector implements AgentStatMetricCollector<TAgentStat> 
         agentStat.setActiveTrace(activeTraceMetricCollector.collect());
         agentStat.setDataSourceList(dataSourceMetricCollector.collect());
         agentStat.setResponseTime(responseTimeMetricCollector.collect());
+        agentStat.setDeadlock(deadlockMetricCollector.collect());
+        agentStat.setFileDescriptor(fileDescriptorMetricCollector.collect());
+        agentStat.setDirectBuffer(directBufferMetricCollector.collect());
 
         return agentStat;
     }
@@ -108,6 +133,9 @@ public class AgentStatCollector implements AgentStatMetricCollector<TAgentStat> 
         sb.append(", activeTraceMetricCollector=").append(activeTraceMetricCollector);
         sb.append(", dataSourceMetricCollector=").append(dataSourceMetricCollector);
         sb.append(", responseTimeMetricCollector=").append(responseTimeMetricCollector);
+        sb.append(", deadlockMetricCollector=").append(deadlockMetricCollector);
+        sb.append(", fileDescriptorMetricCollector=").append(fileDescriptorMetricCollector);
+        sb.append(", directBufferMetricCollector=").append(directBufferMetricCollector);
         sb.append('}');
         return sb.toString();
     }

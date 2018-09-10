@@ -23,6 +23,9 @@ import com.navercorp.pinpoint.common.server.bo.stat.AgentStatDataPoint;
 import com.navercorp.pinpoint.common.server.bo.stat.CpuLoadBo;
 import com.navercorp.pinpoint.common.server.bo.stat.DataSourceBo;
 import com.navercorp.pinpoint.common.server.bo.stat.DataSourceListBo;
+import com.navercorp.pinpoint.common.server.bo.stat.DeadlockBo;
+import com.navercorp.pinpoint.common.server.bo.stat.DirectBufferBo;
+import com.navercorp.pinpoint.common.server.bo.stat.FileDescriptorBo;
 import com.navercorp.pinpoint.common.server.bo.stat.JvmGcBo;
 import com.navercorp.pinpoint.common.server.bo.stat.JvmGcDetailedBo;
 import com.navercorp.pinpoint.common.server.bo.stat.ResponseTimeBo;
@@ -61,6 +64,15 @@ public class AgentStatMapper implements ThriftBoMapper<AgentStatBo, TAgentStat> 
 
     @Autowired
     private ResponseTimeBoMapper responseTimeBoMapper;
+
+    @Autowired
+    private DeadlockBoMapper deadlockBoMapper;
+
+    @Autowired
+    private FileDescriptorBoMapper fileDescriptorBoMapper;
+
+    @Autowired
+    private DirectBufferBoMapper directBufferBoMapper;
 
     @Override
     public AgentStatBo map(TAgentStat tAgentStat) {
@@ -123,6 +135,24 @@ public class AgentStatMapper implements ThriftBoMapper<AgentStatBo, TAgentStat> 
             ResponseTimeBo responseTimeBo = this.responseTimeBoMapper.map(tAgentStat.getResponseTime());
             setBaseData(responseTimeBo, agentId, startTimestamp, timestamp);
             agentStatBo.setResponseTimeBos(Arrays.asList(responseTimeBo));
+        }
+        // deadlock
+        if (tAgentStat.isSetDeadlock()) {
+            DeadlockBo deadlockBo = this.deadlockBoMapper.map(tAgentStat.getDeadlock());
+            setBaseData(deadlockBo, agentId, startTimestamp, timestamp);
+            agentStatBo.setDeadlockBos(Arrays.asList(deadlockBo));
+        }
+        // fileDescriptor
+        if (tAgentStat.isSetFileDescriptor()) {
+            FileDescriptorBo fileDescriptorBo = this.fileDescriptorBoMapper.map(tAgentStat.getFileDescriptor());
+            setBaseData(fileDescriptorBo, agentId, startTimestamp, timestamp);
+            agentStatBo.setFileDescriptorBos(Arrays.asList(fileDescriptorBo));
+        }
+        // directBuffer
+        if (tAgentStat.isSetDirectBuffer()) {
+            DirectBufferBo directBufferBo = this.directBufferBoMapper.map(tAgentStat.getDirectBuffer());
+            setBaseData(directBufferBo, agentId, startTimestamp, timestamp);
+            agentStatBo.setDirectBufferBos(Arrays.asList(directBufferBo));
         }
 
         return agentStatBo;

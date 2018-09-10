@@ -12,7 +12,6 @@
 		"agentList"			: "getAgentList.pinpoint",							// agentId, timestamp ( or agentId, from, to )
 		"agentInfo"			: "getAgentInfo.pinpoint", 							// agentId, timestamp
 		"agentEvent"		: "getAgentEvent.pinpoint", 						// agentId, eventTimestamp, eventTypeCode
-		"agentStatus"		: "getAgentStatus.pinpoint", 						// agentId, timestamp
 		"agentEventList"	: "getAgentEvents.pinpoint", 						// agentId, from, to
 		"agentTimeline"		: "getAgentStatusTimeline.pinpoint",
 		"jvmChart"			: "getAgentStat/jvmGc/chart.pinpoint",
@@ -20,16 +19,22 @@
 		"tpsChart"			: "getAgentStat/transaction/chart.pinpoint",
 		"activeTraceChart"	: "getAgentStat/activeTrace/chart.pinpoint",
 		"dataSourceChart"	: "getAgentStat/dataSource/chartList.pinpoint",
+		"openFileDescriptor": "getAgentStat/fileDescriptor/chart.pinpoint",
+		"directBuffer"		: "getAgentStat/directBuffer/chart.pinpoint",
 		"responseTimeChart" : "getAgentStat/responseTime/chart.pinpoint",
-		"agentStateForChart": "getAgentStat.pinpoint"
+		"statMemory"		: "getApplicationStat/memory/chart.pinpoint",
+		"statCpuLoad"		: "getApplicationStat/cpuLoad/chart.pinpoint",
+		"statTPS"			: "getApplicationStat/transaction/chart.pinpoint",
+		"statActiveThread"	: "getApplicationStat/activeTrace/chart.pinpoint",
+		"statResponseTime"  : "getApplicationStat/responseTime/chart.pinpoint",
+		"statDataSource"	: "getApplicationStat/dataSource/chart.pinpoint",
+		"statOpenFileDescriptor": "getApplicationStat/fileDescriptor/chart.pinpoint",
+		"statDirectBuffer"	: "getApplicationStat/directBuffer/chart.pinpoint"
 	});
 
-	pinpointApp.service('AgentAjaxService', [ 'AgentAjaxServiceConfig', '$http', function ($config, $http) {
+	pinpointApp.service("AgentAjaxService", [ "AgentAjaxServiceConfig", "$http", function ($config, $http) {
 		this.getAgentList = function(data, callback) {
 			retrieve($config.agentList, data, callback);
-		};
-		this.getAgentStateForChart = function( data, callback ) {
-			retrieve($config.agentStateForChart, data, callback);
 		};
 		this.getJVMChartData = function( data, callback ) {
 			retrieve($config.jvmChart, data, callback);
@@ -49,6 +54,12 @@
 		this.getDataSourceChartData = function( data, callback ) {
 			retrieve($config.dataSourceChart, data, callback);
 		};
+		this.getOpenFileDescriptorChartData = function( data, callback ) {
+			retrieve($config.openFileDescriptor, data, callback);
+		};
+		this.getDirectBufferChartData = function( data, callback ) {
+			retrieve($config.directBuffer, data, callback);
+		};
 		this.getAgentInfo = function( data, callback ) {
 			retrieve($config.agentInfo, data, callback);
 		};
@@ -62,6 +73,30 @@
 		};
 		this.getEvent = function( data, callback ) {
 			retrieve($config.agentEvent, data, callback);
+		};
+		this.getStatMemory = function( data, callback ) {
+			retrieve($config.statMemory, data, callback);
+		};
+		this.getStatCpuLoad = function( data, callback ) {
+			retrieve($config.statCpuLoad, data, callback);
+		};
+		this.getStatTPS = function( data, callback ) {
+			retrieve($config.statTPS, data, callback);
+		};
+		this.getStatActiveThread = function( data, callback ) {
+			retrieve($config.statActiveThread, data, callback);
+		};
+		this.getStatResponseTime = function( data, callback ) {
+			retrieve($config.statResponseTime, data, callback);
+		};
+		this.getStatDataSource = function( data, callback ) {
+			retrieve($config.statDataSource, data, callback);
+		};
+		this.getStatOpenFileDescriptor = function( data, callback ) {
+			retrieve($config.statOpenFileDescriptor, data, callback);
+		};
+		this.getStatDirectBuffer = function( data, callback ) {
+			retrieve($config.statDirectBuffer, data, callback);
 		};
 
 		function retrieve(url, data, callback) {
